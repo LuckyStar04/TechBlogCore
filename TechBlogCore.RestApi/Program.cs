@@ -64,6 +64,8 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
 builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+builder.Services.AddScoped<ITagRepo, TagRepo>();
 
 var app = builder.Build();
 

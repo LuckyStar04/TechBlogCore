@@ -42,4 +42,13 @@ namespace TechBlogCore.RestApi.Dtos
         public IEnumerable<string> Tags { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
     }
+
+    public class ArticleIndexDto
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string Category { get; set; }
+        public int ViewCount { get; set; }
+        public DateTime CreateTime { get; set; }
+    }
 }

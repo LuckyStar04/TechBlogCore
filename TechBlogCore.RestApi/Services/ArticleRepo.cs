@@ -23,9 +23,13 @@ namespace TechBlogCore.RestApi.Services
             {
                 query = query.Where(a => a.State != State.Deleted);
             }
-            if (!string.IsNullOrEmpty(param.CategoryName))
+            if (!string.IsNullOrEmpty(param.Category))
             {
-                query = query.Where(c => c.Category.Name == param.CategoryName);
+                query = query.Where(c => c.Category.Name == param.Category);
+            }
+            if (!string.IsNullOrEmpty(param.Tag))
+            {
+                query = query.Where(c => c.Tags.Any(t => t.Name == param.Tag));
             }
             if (!string.IsNullOrEmpty(param.Keyword))
             {

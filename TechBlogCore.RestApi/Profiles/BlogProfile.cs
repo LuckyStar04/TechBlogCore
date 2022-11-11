@@ -13,11 +13,22 @@ public class BlogProfile : Profile
 					   opt => opt.MapFrom(a => a.Category.Name))
 			.ForMember(dest => dest.Tags,
 					   opt => opt.MapFrom(t => t.Tags == null ? Enumerable.Empty<string>() : t.Tags.Select(a => a.Name)));
+		CreateMap<Blog_Article, ArticleIndexDto>()
+			.ForMember(dest => dest.Category,
+					   opt => opt.MapFrom(a => a.Category.Name));
 
-		CreateMap<Blog_Comment, CommentDto>()
+        CreateMap<Blog_Comment, CommentDto>()
 			.ForMember(dest => dest.UserName,
 					   opt => opt.MapFrom(c => c.User.UserName))
 			.ForMember(dest => dest.Email,
 					   opt => opt.MapFrom(c => c.User.Email));
+
+		CreateMap<Blog_Category, CategoryDto>()
+			.ForMember(dest => dest.Count,
+					   opt => opt.MapFrom(c => c.Articles.Count()));
+
+		CreateMap<Blog_Tag, TagDto>()
+			.ForMember(dest => dest.Count,
+					   opt => opt.MapFrom(t => t.Articles.Count()));
 	}
 }
