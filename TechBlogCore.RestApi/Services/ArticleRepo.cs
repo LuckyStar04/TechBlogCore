@@ -49,9 +49,10 @@ namespace TechBlogCore.RestApi.Services
             var newTags = new List<Blog_Tag>(article.Tags?.Count() ?? 0);
             if (article.Tags != null)
             {
+                article.Tags = article.Tags.DistinctBy(t => t.ToLower());
                 foreach (var tag in article.Tags)
                 {
-                    newTags.Add(await context.Blog_Tags.FirstOrDefaultAsync(t => t.Name == tag) ?? new Blog_Tag { Name = tag });
+                    newTags.Add(await context.Blog_Tags.FirstOrDefaultAsync(t => t.Key == tag.ToLower()) ?? new Blog_Tag { Key = tag.ToLower(), Name = tag });
                 }
             }
             var articleCreate = new Blog_Article
@@ -91,9 +92,10 @@ namespace TechBlogCore.RestApi.Services
             var newTags = new List<Blog_Tag>(article.Tags?.Count() ?? 0);
             if (article.Tags != null)
             {
+                article.Tags = article.Tags.DistinctBy(t => t.ToLower());
                 foreach (var tag in article.Tags)
                 {
-                    newTags.Add(await context.Blog_Tags.FirstOrDefaultAsync(t => t.Name == tag) ?? new Blog_Tag { Name = tag });
+                    newTags.Add(await context.Blog_Tags.FirstOrDefaultAsync(t => t.Key == tag.ToLower()) ?? new Blog_Tag { Key = tag.ToLower(), Name = tag });
                 }
             }
             entity.Tags = newTags;

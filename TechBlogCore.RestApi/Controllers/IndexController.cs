@@ -32,7 +32,7 @@ namespace TechBlogCore.RestApi.Controllers
         public async Task<IActionResult> Index()
         {
             var articles = await articleRepo.GetArticles(new ArticleDtoParam());
-            var articleDtos = mapper.Map<IEnumerable<ArticleIndexDto>>(articles);
+            var articleDtos = mapper.Map<IEnumerable<ArticleListDto>>(articles);
             var paginationMetadata = new
             {
                 totalCount = articles.TotalCount,

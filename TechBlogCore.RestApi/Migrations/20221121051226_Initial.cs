@@ -91,6 +91,8 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Key = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -382,9 +384,9 @@ namespace TechBlogCore.RestApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blog_Tags_Name",
+                name: "IX_Blog_Tags_Key",
                 table: "Blog_Tags",
-                column: "Name");
+                column: "Key");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

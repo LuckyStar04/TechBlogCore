@@ -336,6 +336,11 @@ namespace TechBlogCore.RestApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("VARCHAR(10)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -343,7 +348,7 @@ namespace TechBlogCore.RestApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Key");
 
                     b.ToTable("Blog_Tags");
                 });

@@ -11,7 +11,7 @@ using TechBlogCore.RestApi.Data;
 namespace TechBlogCore.RestApi.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20221111043945_Initial")]
+    [Migration("20221121051226_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -338,6 +338,11 @@ namespace TechBlogCore.RestApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("VARCHAR(10)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -345,7 +350,7 @@ namespace TechBlogCore.RestApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Key");
 
                     b.ToTable("Blog_Tags");
                 });

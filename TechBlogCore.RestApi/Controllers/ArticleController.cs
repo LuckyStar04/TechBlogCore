@@ -14,20 +14,26 @@ namespace TechBlogCore.RestApi.Controllers;
 public class ArticleController : ControllerBase
 {
 	private readonly IArticleRepo articleRepo;
-	private readonly IMapper mapper;
+    private readonly ICategoryRepo categoryRepo;
+    private readonly ITagRepo tagRepo;
+    private readonly IMapper mapper;
 
 	public ArticleController(IArticleRepo articleRepo,
+                             ICategoryRepo categoryRepo,
+                             ITagRepo tagRepo,
 							 IMapper mapper)
 	{
 		this.articleRepo = articleRepo;
-		this.mapper = mapper;
+        this.categoryRepo = categoryRepo;
+        this.tagRepo = tagRepo;
+        this.mapper = mapper;
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<IEnumerable<ArticleDto>>> GetArticles([FromQuery]ArticleDtoParam param)
+	public async Task<IActionResult> GetArticles([FromQuery]ArticleDtoParam param)
 	{
 		var articles = await articleRepo.GetArticles(param);
-		var dtos = mapper.Map<IEnumerable<ArticleDto>>(articles);
+		var articleDtos = mapper.Map<IEnumerable<ArticleListDto>>(articles);
         var paginationMetadata = new
         {
             totalCount = articles.TotalCount,
@@ -42,14 +48,14 @@ public class ArticleController : ControllerBase
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             }));
 
-        return Ok(dtos);
+        return Ok(articleDtos);
     }
 
     [HttpGet("{id:int:min(1)}", Name = nameof(GetArticle))]
-    public async Task<ActionResult<ArticleDto>> GetArticle(int id)
+    public async Task<ActionResult<ArticleDetailDto>> GetArticle(int id)
     {
         var article = await articleRepo.GetArticle(id);
-        var dto = mapper.Map<ArticleDto>(article);
+        var dto = mapper.Map<ArticleDetailDto>(article);
         return Ok(dto);
     }
 
@@ -58,7 +64,7 @@ public class ArticleController : ControllerBase
     public async Task<IActionResult> CreateArticle(ArticleCreateDto createDto)
     {
         var result = await articleRepo.CreateArticle(createDto);
-        var dto = mapper.Map<ArticleDto>(result);
+        var dto = mapper.Map<ArticleDetailDto>(result);
         return CreatedAtRoute(nameof(GetArticle), new { id = result.Id }, dto);
     }
 

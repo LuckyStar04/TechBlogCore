@@ -9,6 +9,22 @@ using TechBlogCore.RestApi.Entities;
 using TechBlogCore.RestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "_myAllowSpecificOrigins",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://127.0.0.1:5173", "http://localhost:5173",
+                        "http://127.0.0.1:5174", "http://localhost:5174")
+                            .WithExposedHeaders("X-Pagination")
+                            .SetIsOriginAllowed(x => _ = true)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    }
+    );
+});
+
 var configuration = builder.Configuration;
 // Add services to the container.
 
@@ -74,6 +90,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("_myAllowSpecificOrigins");
 }
 
 app.UseHttpsRedirection();

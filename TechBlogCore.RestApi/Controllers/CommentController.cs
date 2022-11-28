@@ -83,7 +83,7 @@ namespace TechBlogCore.RestApi.Controllers
             var user = await userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email)?.Value);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("请登录");
             }
             var articleEntity = await articleRepo.GetArticle(articleId);
             if (articleEntity == null)
@@ -106,7 +106,7 @@ namespace TechBlogCore.RestApi.Controllers
             var user = await userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email)?.Value);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("请登录");
             }
             var articleEntity = await articleRepo.GetArticle(articleId);
             if (articleEntity == null)
@@ -127,9 +127,9 @@ namespace TechBlogCore.RestApi.Controllers
             var result = await commentRepo.ModifyComment(comment, dto.Content);
             if (result)
             {
-                return Ok();
+                return Ok("修改成功");
             }
-            return BadRequest();
+            return BadRequest("修改失败");
         }
 
         [Authorize(Roles = "Admin,CommonUser")]
@@ -139,7 +139,7 @@ namespace TechBlogCore.RestApi.Controllers
             var user = await userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email)?.Value);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("用户未找到");
             }
             var articleEntity = await articleRepo.GetArticle(articleId);
             if (articleEntity == null)
@@ -154,7 +154,7 @@ namespace TechBlogCore.RestApi.Controllers
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (role != "Admin" && comment.UserId != user.Id)
             {
-                return Unauthorized("不能删除他人评论");
+                return Unauthorized("不能删除他人评论！");
             }
 
             var result = await commentRepo.DeleteComment(comment);
@@ -162,7 +162,7 @@ namespace TechBlogCore.RestApi.Controllers
             {
                 return Ok();
             }
-            return BadRequest();
+            return BadRequest("删除失败");
         }
     }
 }

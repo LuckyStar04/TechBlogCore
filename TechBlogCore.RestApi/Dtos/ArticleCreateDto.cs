@@ -11,8 +11,7 @@ namespace TechBlogCore.RestApi.Dtos
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
         public string Category { get; set; }
-        [Required(ErrorMessage = "{0} 字段是必填的")]
-        public State State { get; set; }
+        public State State { get; set; } = State.Active;
         [Required(ErrorMessage = "{0} 字段是必填的")]
         public IEnumerable<string> Tags { get; set; }
     }
@@ -25,14 +24,14 @@ namespace TechBlogCore.RestApi.Dtos
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
         public string Category { get; set; }
-        [Required(ErrorMessage = "{0} 字段是必填的")]
-        public State State { get; set; }
+        public State State { get; set; } = State.Modified;
         [Required(ErrorMessage = "{0} 字段是必填的")]
         public IEnumerable<string> Tags { get; set; }
     }
 
-    public class ArticleDto
+    public class ArticleDetailDto
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Category { get; set; }
@@ -43,12 +42,14 @@ namespace TechBlogCore.RestApi.Dtos
         public IEnumerable<CommentDto> Comments { get; set; }
     }
 
-    public class ArticleIndexDto
+    public class ArticleListDto
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string Category { get; set; }
         public int ViewCount { get; set; }
+        public int CommentCount { get; set; }
         public DateTime CreateTime { get; set; }
     }
 }

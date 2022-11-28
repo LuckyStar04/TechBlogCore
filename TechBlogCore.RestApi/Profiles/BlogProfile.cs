@@ -8,14 +8,18 @@ public class BlogProfile : Profile
 {
 	public BlogProfile()
 	{
-		CreateMap<Blog_Article, ArticleDto>()
+		CreateMap<Blog_Article, ArticleDetailDto>()
 			.ForMember(dest => dest.Category,
 					   opt => opt.MapFrom(a => a.Category.Name))
 			.ForMember(dest => dest.Tags,
 					   opt => opt.MapFrom(t => t.Tags == null ? Enumerable.Empty<string>() : t.Tags.Select(a => a.Name)));
-		CreateMap<Blog_Article, ArticleIndexDto>()
+		CreateMap<Blog_Article, ArticleListDto>()
+			.ForMember(dest => dest.Content,
+			           opt => opt.MapFrom(a => a.Content.Length > 50 ? a.Content.Substring(0, 50) + "…"	 : a.Content))
 			.ForMember(dest => dest.Category,
-					   opt => opt.MapFrom(a => a.Category.Name));
+					   opt => opt.MapFrom(a => a.Category.Name))
+			.ForMember(dest => dest.CommentCount,
+			           opt => opt.MapFrom(a => a.Comments.Count()));
 
         CreateMap<Blog_Comment, CommentDto>()
 			.ForMember(dest => dest.UserName,
