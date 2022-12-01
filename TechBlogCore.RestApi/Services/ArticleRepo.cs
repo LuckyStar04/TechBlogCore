@@ -55,14 +55,15 @@ namespace TechBlogCore.RestApi.Services
                     newTags.Add(await context.Blog_Tags.FirstOrDefaultAsync(t => t.Key == tag.ToLower()) ?? new Blog_Tag { Key = tag.ToLower(), Name = tag });
                 }
             }
+            var now = DateTime.Now;
             var articleCreate = new Blog_Article
             {
                 Title = article.Title,
                 Content = article.Content,
                 Category = await context.Blog_Categories.FirstOrDefaultAsync(c => c.Name == article.Category) ?? new Blog_Category { Name = article.Category, CreateTime = DateTime.Now },
                 State = article.State,
-                CreateTime = DateTime.Now,
-                ModifyTime = DateTime.Now,
+                CreateTime = now,
+                ModifyTime = now,
                 Tags = newTags,
             };
             await context.Blog_Articles.AddAsync(articleCreate);

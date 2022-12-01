@@ -38,6 +38,7 @@ namespace TechBlogCore.RestApi.Dtos
         public State State { get; set; }
         public int ViewCount { get; set; }
         public DateTime CreateTime { get; set; }
+        public DateTime ModifyTime { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
     }

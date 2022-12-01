@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
                     policy =>
                     {
                         policy.WithOrigins("http://127.0.0.1:5173", "http://localhost:5173",
-                        "http://127.0.0.1:5174", "http://localhost:5174")
+                        "http://127.0.0.1:5174", "http://localhost:5174", "http://192.168.2.233:5173")
                             .WithExposedHeaders("X-Pagination")
                             .SetIsOriginAllowed(x => _ = true)
                             .AllowAnyMethod()
@@ -93,7 +93,7 @@ if (app.Environment.IsDevelopment())
     app.UseCors("_myAllowSpecificOrigins");
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

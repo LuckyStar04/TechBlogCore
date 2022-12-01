@@ -116,23 +116,6 @@ namespace TechBlogCore.RestApi.Controllers
             return Ok(new { role, user, email });
         }
 
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
-        {
-            await roleManager.CreateAsync(new IdentityRole { Name = "Admin" });
-            await roleManager.CreateAsync(new IdentityRole { Name = "CommonUser" });
-
-            var user = new Blog_User
-            {
-                Email = "cx2529507@163.com",
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = "LuckyStar",
-            };
-            var result = await userManager.CreateAsync(user, "2368lst");
-            await userManager.AddToRoleAsync(user, "Admin");
-            return Ok();
-        }
-
         private string GetToken(string sub, string email, string role)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
