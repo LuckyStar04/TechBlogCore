@@ -25,3 +25,8 @@ public class Blog_Comment
     [Required]
     public State State { get; set; }
 }
+
+public class Blog_RoleComment : Blog_Comment
+{
+    public string Role { get; set; }
+}

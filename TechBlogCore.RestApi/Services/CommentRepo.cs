@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using TechBlogCore.RestApi.Data;
 using TechBlogCore.RestApi.DtoParams;
@@ -26,6 +27,7 @@ namespace TechBlogCore.RestApi.Services
         public Task<Blog_Comment> GetComment(int articleId, int commentId)
         {
             return context.Blog_Comments.Include(c => c.User).Include(c => c.Children).FirstOrDefaultAsync(c => c.Id == commentId);
+                    
         }
         public async Task<Blog_Comment> CreateComment(Blog_User user, Blog_Article article, Blog_Comment parent, string content)
         {

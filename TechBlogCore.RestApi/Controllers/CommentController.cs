@@ -19,16 +19,19 @@ namespace TechBlogCore.RestApi.Controllers
         private readonly IArticleRepo articleRepo;
         private readonly ICommentRepo commentRepo;
         private readonly UserManager<Blog_User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IMapper mapper;
 
         public CommentController(IArticleRepo articleRepo,
                                  ICommentRepo commentRepo,
                                  UserManager<Blog_User> userManager,
+                                 RoleManager<IdentityRole> roleManager,
                                  IMapper mapper)
         {
             this.articleRepo = articleRepo;
             this.commentRepo = commentRepo;
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.mapper = mapper;
         }
 
