@@ -39,9 +39,17 @@ namespace TechBlogCore.RestApi.Services
             return PagedList<Blog_Article>.CreateAsync(query, param.PageNumber, param.PageSize);
         }
 
+        public Task<bool> ArticleExists(int id)
+        {
+            return context.Blog_Articles.AnyAsync(a => a.Id == id);
+        }
         public Task<Blog_Article> GetArticle(int id)
         {
-            return context.Blog_Articles.Include(a => a.Comments).Include(a => a.Category).Include(a => a.Tags).FirstOrDefaultAsync(a => a.Id == id);
+            return context.Blog_Articles.Include(a => a.Category)
+                                        .Include(a => a.Tags)
+                                        .Include(a => a.Comments).ThenInclude(c => c.User)
+                                        .Include(a => a.Comments).ThenInclude(c => c.Children)
+                                        .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Blog_Article> CreateArticle(ArticleCreateDto article)

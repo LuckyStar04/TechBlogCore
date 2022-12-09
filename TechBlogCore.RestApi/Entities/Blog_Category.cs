@@ -9,7 +9,7 @@ public class Blog_Category
     [Key]
     public int Id { get; set; }
     [Required]
-    [Column(TypeName = "VARCHAR(10)")]
+    [Column(TypeName = "VARCHAR(20)")]
     public string Name { get; set; }
     [Required]
     public DateTime CreateTime { get; set; }

@@ -14,7 +14,7 @@ namespace TechBlogCore.RestApi.Services
         }
         public IEnumerable<Blog_Tag> GetTags(int size)
         {
-            return context.Blog_Tags.Include(t => t.Articles).OrderByDescending(t => t.Articles.Count()).Take(size);
+            return context.Blog_Tags.Include(t => t.Articles).Where(t => t.Articles.Count() > 0).OrderByDescending(t => t.Articles.Count()).Take(size);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace TechBlogCore.RestApi.Data
             builder.Entity<Blog_Comment>()
                 .HasOne(c => c.User)
                 .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.UserId)
+                .HasForeignKey(c => c.Blog_UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // modelBuilder.Entity<Article_Tags>()

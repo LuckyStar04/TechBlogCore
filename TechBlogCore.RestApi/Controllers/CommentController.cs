@@ -38,8 +38,8 @@ namespace TechBlogCore.RestApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetComments(int articleId, [FromQuery]CommentDtoParam param)
         {
-            var articleEntity = await articleRepo.GetArticle(articleId);
-            if (articleEntity == null)
+            var exists = await articleRepo.ArticleExists(articleId);
+            if (!exists)
             {
                 return NotFound("文章未找到！");
             }
@@ -65,8 +65,8 @@ namespace TechBlogCore.RestApi.Controllers
         [HttpGet("{commentId:int:min(1)}", Name = nameof(GetComment))]
         public async Task<ActionResult<CommentDto>> GetComment(int articleId, int commentId)
         {
-            var articleEntity = await articleRepo.GetArticle(articleId);
-            if (articleEntity == null)
+            var exists = await articleRepo.ArticleExists(articleId);
+            if (!exists)
             {
                 return NotFound("文章未找到！");
             }
@@ -97,9 +97,14 @@ namespace TechBlogCore.RestApi.Controllers
             if (dto.ParentId != null && dto.ParentId > 0)
             {
                 parent = await commentRepo.GetComment(articleId, dto.ParentId.Value);
+                if (parent == null)
+                {
+                    return NotFound("父评论未找到！");
+                }
             }
-            var commentCreate = await commentRepo.CreateComment(user, articleEntity, parent, dto.Content);
-            return CreatedAtRoute(nameof(GetComment), new { articleId, commentId = commentCreate.Id }, commentCreate);
+            var commentCreate = await commentRepo.CreateComment(user, articleEntity, parent, dto.Content, dto.ReplyTo);
+            var commentDto = mapper.Map<CommentDto>(commentCreate);
+            return CreatedAtRoute(nameof(GetComment), new { articleId, commentId = commentCreate.Id }, commentDto);
         }
 
         [Authorize(Roles = "Admin,CommonUser")]
@@ -122,7 +127,7 @@ namespace TechBlogCore.RestApi.Controllers
                 return NotFound("评论未找到！");
             }
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (role != "Admin" && comment.UserId != user.Id)
+            if (role != "Admin" && comment.Blog_UserId != user.Id)
             {
                 return Unauthorized("不能修改他人评论");
             }
@@ -155,7 +160,7 @@ namespace TechBlogCore.RestApi.Controllers
                 return NotFound("评论未找到！");
             }
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (role != "Admin" && comment.UserId != user.Id)
+            if (role != "Admin" && comment.Blog_UserId != user.Id)
             {
                 return Unauthorized("不能删除他人评论！");
             }

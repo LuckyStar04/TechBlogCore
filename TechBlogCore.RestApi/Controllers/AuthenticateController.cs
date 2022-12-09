@@ -87,11 +87,21 @@ namespace TechBlogCore.RestApi.Controllers
                     Msg = "用户已存在"
                 });
             }
+            userExists = await userManager.FindByEmailAsync(dto.Email);
+            if (userExists != null)
+            {
+                return BadRequest(new ResponseDto<string>
+                {
+                    Code = 1,
+                    Msg = "邮箱已注册"
+                });
+            }
             var user = new Blog_User
             {
                 Email = dto.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = dto.Username
+                UserName = dto.Username,
+                Role = "CommonUser",
             };
             var result = await userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)

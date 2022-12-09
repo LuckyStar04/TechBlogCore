@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using TechBlogCore.RestApi.Dtos;
 using TechBlogCore.RestApi.Entities;
 
@@ -7,11 +8,8 @@ namespace TechBlogCore.RestApi.Profiles;
 
 public class BlogProfile : Profile
 {
-	private readonly UserManager<Blog_User> userManager;
-
-	public BlogProfile(UserManager<Blog_User> userManager)
+	public BlogProfile()
 	{
-        this.userManager = userManager;
         CreateMap<Blog_Article, ArticleDetailDto>()
 			.ForMember(dest => dest.Category,
 					   opt => opt.MapFrom(a => a.Category.Name))
@@ -25,13 +23,13 @@ public class BlogProfile : Profile
 			.ForMember(dest => dest.CommentCount,
 			           opt => opt.MapFrom(a => a.Comments.Count()));
 
-        CreateMap<Blog_Comment, CommentDto>()
+		CreateMap<Blog_Comment, CommentDto>()
 			.ForMember(dest => dest.UserName,
 					   opt => opt.MapFrom(c => c.User.UserName))
 			.ForMember(dest => dest.Email,
 					   opt => opt.MapFrom(c => c.User.Email))
 			.ForMember(dest => dest.Role,
-					   opt => opt.MapFrom(r => userManager.GetRolesAsync(r.User).GetAwaiter().GetResult()[0]));
+					   opt => opt.MapFrom(r => r.User.Role));
 
 		CreateMap<Blog_Category, CategoryDto>()
 			.ForMember(dest => dest.Count,

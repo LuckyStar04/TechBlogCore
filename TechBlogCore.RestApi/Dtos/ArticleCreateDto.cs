@@ -6,10 +6,13 @@ namespace TechBlogCore.RestApi.Dtos
     public class ArticleCreateDto
     {
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(100, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Title { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(16777215, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(10, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Category { get; set; }
         public State State { get; set; } = State.Active;
         [Required(ErrorMessage = "{0} 字段是必填的")]
@@ -19,10 +22,13 @@ namespace TechBlogCore.RestApi.Dtos
     public class ArticleUpdateDto
     {
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(100, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Title { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(16777215, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
+        [MaxLength(10, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Category { get; set; }
         public State State { get; set; } = State.Modified;
         [Required(ErrorMessage = "{0} 字段是必填的")]

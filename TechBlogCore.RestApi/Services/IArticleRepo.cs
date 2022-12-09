@@ -8,6 +8,7 @@ namespace TechBlogCore.RestApi.Services
     public interface IArticleRepo
     {
         Task<PagedList<Blog_Article>> GetArticles(ArticleDtoParam param);
+        Task<bool> ArticleExists(int id);
         Task<Blog_Article> GetArticle(int id);
         Task<Blog_Article> CreateArticle(ArticleCreateDto article);
         Task<bool> DeleteArticle(int id);

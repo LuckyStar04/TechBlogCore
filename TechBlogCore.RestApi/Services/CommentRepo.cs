@@ -20,16 +20,21 @@ namespace TechBlogCore.RestApi.Services
 
         public Task<PagedList<Blog_Comment>> GetArticleComments(int articleId, CommentDtoParam param)
         {
-            var query = context.Blog_Comments.Include(c => c.User).Include(c => c.Children).Where(c => c.ArticleId == articleId && c.State != State.Deleted);
+            var query = context.Blog_Comments.Include(c => c.User)
+                                             .Include(c => c.Children)
+                                             .Where(c => c.ArticleId == articleId &&
+                                                         c.ParentId == null &&
+                                                         c.State != State.Deleted);
             return PagedList<Blog_Comment>.CreateAsync(query, param.PageNumber, param.PageSize);
         }
 
         public Task<Blog_Comment> GetComment(int articleId, int commentId)
         {
-            return context.Blog_Comments.Include(c => c.User).Include(c => c.Children).FirstOrDefaultAsync(c => c.Id == commentId);
-                    
+            return context.Blog_Comments.Include(c => c.User)
+                                        .Include(c => c.Children)
+                                        .FirstOrDefaultAsync(c => c.Id == commentId);
         }
-        public async Task<Blog_Comment> CreateComment(Blog_User user, Blog_Article article, Blog_Comment parent, string content)
+        public async Task<Blog_Comment> CreateComment(Blog_User user, Blog_Article article, Blog_Comment parent, string content, string ReplyTo)
         {
             var commentCreate = new Blog_Comment
             {
@@ -37,6 +42,7 @@ namespace TechBlogCore.RestApi.Services
                 Article = article,
                 Parent = parent,
                 Content = content,
+                ReplyTo = ReplyTo,
                 CommentTime = DateTime.Now,
                 State = State.Active
             };

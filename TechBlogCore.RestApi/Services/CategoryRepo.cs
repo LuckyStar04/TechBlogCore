@@ -14,6 +14,6 @@ public class CategoryRepo : ICategoryRepo
     }
     public IEnumerable<Blog_Category> GetCategories(int size)
     {
-        return context.Blog_Categories.Include(c => c.Articles).OrderByDescending(c => c.Articles.Count()).Take(size);
+        return context.Blog_Categories.Include(c => c.Articles).Where(t => t.Articles.Count() > 0).OrderByDescending(c => c.Articles.Count()).Take(size);
     }
 }

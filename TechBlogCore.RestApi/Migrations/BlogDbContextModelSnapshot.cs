@@ -22,7 +22,7 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -59,7 +59,7 @@ namespace TechBlogCore.RestApi.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("Id");
 
@@ -71,7 +71,7 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -95,7 +95,7 @@ namespace TechBlogCore.RestApi.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -152,7 +152,7 @@ namespace TechBlogCore.RestApi.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("Id");
 
@@ -164,17 +164,17 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -186,10 +186,10 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -201,13 +201,13 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(95)");
 
                     b.Property<string>("Value")
                         .HasColumnType("longtext");
@@ -231,10 +231,10 @@ namespace TechBlogCore.RestApi.Migrations
                         .HasColumnType("MEDIUMTEXT");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("ModifyTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -276,11 +276,11 @@ namespace TechBlogCore.RestApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(10)");
+                        .HasColumnType("VARCHAR(20)");
 
                     b.HasKey("Id");
 
@@ -298,34 +298,38 @@ namespace TechBlogCore.RestApi.Migrations
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Blog_UserId")
+                        .IsRequired()
+                        .HasMaxLength(95)
+                        .HasColumnType("VARCHAR(95)");
+
                     b.Property<DateTime>("CommentTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("VARCHAR(1000)");
 
                     b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReplyTo")
+                        .HasMaxLength(191)
+                        .HasColumnType("VARCHAR(191)");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("VARCHAR(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("Blog_UserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Blog_Comments");
                 });
@@ -338,13 +342,13 @@ namespace TechBlogCore.RestApi.Migrations
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("VARCHAR(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("VARCHAR(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR(20)");
 
                     b.HasKey("Id");
 
@@ -356,6 +360,9 @@ namespace TechBlogCore.RestApi.Migrations
             modelBuilder.Entity("TechBlogCore.RestApi.Entities.Blog_User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("longtext");
 
                     b.HasDiscriminator().HasValue("Blog_User");
                 });
@@ -449,16 +456,16 @@ namespace TechBlogCore.RestApi.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("TechBlogCore.RestApi.Entities.Blog_User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("Blog_UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("TechBlogCore.RestApi.Entities.Blog_Comment", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("TechBlogCore.RestApi.Entities.Blog_User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
 
                     b.Navigation("Article");
 

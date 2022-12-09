@@ -17,7 +17,7 @@ namespace TechBlogCore.RestApi.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Id = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -36,9 +36,11 @@ namespace TechBlogCore.RestApi.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Id = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Discriminator = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Role = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -59,7 +61,7 @@ namespace TechBlogCore.RestApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: true),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
@@ -75,9 +77,9 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "VARCHAR(10)", nullable: false)
+                    Name = table.Column<string>(type: "VARCHAR(20)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreateTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,9 +93,9 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Key = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
+                    Key = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
+                    Name = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -108,7 +110,7 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    RoleId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ClaimType = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -133,7 +135,7 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ClaimType = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -156,13 +158,13 @@ namespace TechBlogCore.RestApi.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false)
+                    ProviderKey = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -181,9 +183,9 @@ namespace TechBlogCore.RestApi.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RoleId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    RoleId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -208,11 +210,11 @@ namespace TechBlogCore.RestApi.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Name = table.Column<string>(type: "varchar(95)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Value = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -242,8 +244,8 @@ namespace TechBlogCore.RestApi.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreateTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -285,22 +287,24 @@ namespace TechBlogCore.RestApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false)
+                    Blog_UserId = table.Column<string>(type: "VARCHAR(95)", maxLength: 95, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ReplyTo = table.Column<string>(type: "VARCHAR(191)", maxLength: 191, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ArticleId = table.Column<int>(type: "int", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     Content = table.Column<string>(type: "VARCHAR(1000)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CommentTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CommentTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     State = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blog_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Blog_Comments_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Blog_Comments_AspNetUsers_Blog_UserId",
+                        column: x => x.Blog_UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -374,14 +378,14 @@ namespace TechBlogCore.RestApi.Migrations
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Blog_Comments_Blog_UserId",
+                table: "Blog_Comments",
+                column: "Blog_UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Blog_Comments_ParentId",
                 table: "Blog_Comments",
                 column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Blog_Comments_UserId",
-                table: "Blog_Comments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blog_Tags_Key",

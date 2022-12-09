@@ -55,6 +55,7 @@ public class ArticleController : ControllerBase
     public async Task<ActionResult<ArticleDetailDto>> GetArticle(int id)
     {
         var article = await articleRepo.GetArticle(id);
+        if (article != null) article.Comments = article.Comments.Where(c => c.ParentId == null);
         var dto = mapper.Map<ArticleDetailDto>(article);
         return Ok(dto);
     }

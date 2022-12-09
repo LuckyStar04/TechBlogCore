@@ -6,10 +6,13 @@ public class Blog_Comment
 {
     [Key]
     public int Id { get; set; }
-    [Required, StringLength(255)]
-    [Column(TypeName = "VARCHAR(255)")]
-    public string UserId { get; set; }
+    [Required, StringLength(95)]
+    [Column(TypeName = "VARCHAR(95)")]
+    public string Blog_UserId { get; set; }
     public Blog_User User { get; set; }
+    [StringLength(191)]
+    [Column(TypeName = "VARCHAR(191)")]
+    public string ReplyTo { get; set; }
     [Required]
     public int ArticleId { get; set; }
     public Blog_Article Article { get; set; }

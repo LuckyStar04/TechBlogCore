@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TechBlogCore.RestApi.Data;
 using TechBlogCore.RestApi.Entities;
+using TechBlogCore.RestApi.Profiles;
 using TechBlogCore.RestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +30,7 @@ builder.Services.AddCors(options =>
 var configuration = builder.Configuration;
 // Add services to the container.
 
-var sqlVersion = new MariaDbServerVersion(new Version(10, 9));
+var sqlVersion = new MariaDbServerVersion(new Version(5, 5, 68));
 builder.Services.AddDbContext<BlogDbContext>(options => options.UseMySql(configuration.GetConnectionString("DefaultConnection"), sqlVersion));
 builder.Services.Configure<IdentityOptions>(options =>
 {
