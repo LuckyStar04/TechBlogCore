@@ -12,7 +12,7 @@ namespace TechBlogCore.RestApi.Dtos
         [MaxLength(16777215, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
-        [MaxLength(10, ErrorMessage = "{0} 的最大长度为 {1}。")]
+        [MaxLength(20, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Category { get; set; }
         public State State { get; set; } = State.Active;
         [Required(ErrorMessage = "{0} 字段是必填的")]
@@ -28,7 +28,7 @@ namespace TechBlogCore.RestApi.Dtos
         [MaxLength(16777215, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Content { get; set; }
         [Required(ErrorMessage = "{0} 字段是必填的")]
-        [MaxLength(10, ErrorMessage = "{0} 的最大长度为 {1}。")]
+        [MaxLength(20, ErrorMessage = "{0} 的最大长度为 {1}。")]
         public string Category { get; set; }
         public State State { get; set; } = State.Modified;
         [Required(ErrorMessage = "{0} 字段是必填的")]

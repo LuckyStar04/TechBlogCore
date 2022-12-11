@@ -14,14 +14,16 @@ public class BlogProfile : Profile
 			.ForMember(dest => dest.Category,
 					   opt => opt.MapFrom(a => a.Category.Name))
 			.ForMember(dest => dest.Tags,
-					   opt => opt.MapFrom(t => t.Tags == null ? Enumerable.Empty<string>() : t.Tags.Select(a => a.Name)));
+					   opt => opt.MapFrom(t => t.Tags == null ? Enumerable.Empty<string>() : t.Tags.Select(a => a.Name)))
+			.ForMember(dest => dest.ViewCount,
+			           opt => opt.MapFrom(t => t.ViewsCount));
 		CreateMap<Blog_Article, ArticleListDto>()
 			.ForMember(dest => dest.Content,
 			           opt => opt.MapFrom(a => a.Content.Length > 180 ? a.Content.Substring(0, 180) + "…" : a.Content))
 			.ForMember(dest => dest.Category,
 					   opt => opt.MapFrom(a => a.Category.Name))
 			.ForMember(dest => dest.CommentCount,
-			           opt => opt.MapFrom(a => a.Comments.Count()));
+			           opt => opt.MapFrom(a => a.Comments.Where(c => c.State != State.Deleted).Count()));
 
 		CreateMap<Blog_Comment, CommentDto>()
 			.ForMember(dest => dest.UserName,
@@ -33,10 +35,10 @@ public class BlogProfile : Profile
 
 		CreateMap<Blog_Category, CategoryDto>()
 			.ForMember(dest => dest.Count,
-					   opt => opt.MapFrom(c => c.Articles.Count()));
+					   opt => opt.MapFrom(c => c.Articles.Where(a => a.State != State.Deleted).Count()));
 
 		CreateMap<Blog_Tag, TagDto>()
 			.ForMember(dest => dest.Count,
-					   opt => opt.MapFrom(t => t.Articles.Count()));
+					   opt => opt.MapFrom(t => t.Articles.Where(a => a.State != State.Deleted).Count()));
 	}
 }
