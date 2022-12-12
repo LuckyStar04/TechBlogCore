@@ -31,6 +31,7 @@ var configuration = builder.Configuration;
 // Add services to the container.
 
 var sqlVersion = new MariaDbServerVersion(new Version(5, 5, 68));
+builder.Services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 builder.Services.AddDbContext<BlogDbContext>(options => options.UseMySql(configuration.GetConnectionString("DefaultConnection"), sqlVersion));
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -48,9 +49,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.AllowedForNewUsers = true;
 
     // User settings.
-    options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false;
+    options.User.AllowedUserNameCharacters = null;
+    options.User.RequireUniqueEmail = true;
 });
 
 builder.Services.AddControllers();
