@@ -32,7 +32,7 @@ var sqlVersion = new MariaDbServerVersion(new Version(5, 5, 68)); //change this 
 
 ### Configure Database ConnectionString
 
-Configure your Database Connection String in `appsettings.Development.json` for development, or `appsettings.json` for production:
+Configure your database connectionstring in `appsettings.Development.json` for development, or `appsettings.json` for production:
 
 ```json
 "ConnectionStrings": {
