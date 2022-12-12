@@ -24,9 +24,31 @@ For CentOS 7:
 sudo yum install mariadb-server
 ```
 
+### Configure CORS Options
+
+Change the IP address and port depends on your local network environment
+
+```cs
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "_myAllowSpecificOrigins",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://127.0.0.1:5173", "http://localhost:5173",
+                        "http://127.0.0.1:5174", "http://localhost:5174", "http://192.168.2.233:5173")
+                            .WithExposedHeaders("X-Pagination")
+                            .SetIsOriginAllowed(x => _ = true)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    }
+    );
+});
+```
+
 ### Specify Database Version for EF Core
 
-For other Linux distro/Windows, you can install any version of MariaDB/MySQL, just need to modify `Program.cs`:
+For other Linux distro/Windows, you can install any version of MariaDB/MySQL
 
 ```cs
 var sqlVersion = new MariaDbServerVersion(new Version(5, 5, 68)); //change this to your database version
