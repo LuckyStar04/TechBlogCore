@@ -4,7 +4,9 @@
 
 ## 简介 | Introduction
 
-简约时尚风格博客后端，采用 ASP.NET Core Rest API + EF Core + MariaDB + JWT 鉴权，最终部署在 CentOS，采用 Nginx 实现 https
+简约时尚风格博客后端，采用 ASP.NET Core Rest API + EF Core + MariaDB + JWT 鉴权
+
+项目最终部署在 CentOS，采用 Nginx 实现 https
 
 需要项目预览，请移步 [这里](https://lhyy2022.xyz/)
 
