@@ -18,12 +18,19 @@ If you want a preview please visit [here](https://lhyy2022.xyz/)
 
 ### Install Database
 
-You can install any database which is supported by EF Core.
-
-Install MariaDB for example:
+You can install both MySQL & MariaDB:
 
 ```sh
 sudo yum install mariadb-server
+```
+
+If you want to change database to SQL Server,
+
+change the nuget package from `Pomelo.EntityFrameworkCore.Mysql` to `Microsoft.EntityFrameworkCore.SqlServer`:
+
+```sh
+dotnet remove package Pomelo.EntityFrameworkCore.Mysql
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 6.0.10
 ```
 
 ### Configure CORS Options
