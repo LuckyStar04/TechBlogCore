@@ -10,7 +10,7 @@
 
 需要项目预览，请移步 [这里](https://lhyy2022.xyz/)
 
-A blog back-end based on ASP.NET Core 6 Rest API + EF Core + MariaDB + JWT Authorization, deployed on CentOS, implemented https based on Nginx
+A blog back-end based on ASP.NET Core 6 Rest API + EF Core + JWT Authorization, deployed on CentOS, implemented https based on Nginx
 
 If you want a preview please visit [here](https://lhyy2022.xyz/)
 
@@ -18,7 +18,9 @@ If you want a preview please visit [here](https://lhyy2022.xyz/)
 
 ### Install Database
 
-For CentOS 7:
+You can install any database which is supported by EF Core.
+
+Install MariaDB for example:
 
 ```sh
 sudo yum install mariadb-server
