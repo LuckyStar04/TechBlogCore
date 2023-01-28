@@ -19,7 +19,7 @@ public class BlogProfile : Profile
 			           opt => opt.MapFrom(t => t.ViewsCount));
 		CreateMap<Blog_Article, ArticleListDto>()
 			.ForMember(dest => dest.Content,
-			           opt => opt.MapFrom(a => a.Content.Length > 180 ? a.Content.Substring(0, 180) + "…" : a.Content))
+			           opt => opt.MapFrom(a => a.Content.Length > 260 ? a.Content.Substring(0, 260) + "…" : a.Content))
 			.ForMember(dest => dest.Category,
 					   opt => opt.MapFrom(a => a.Category.Name))
 			.ForMember(dest => dest.CommentCount,
