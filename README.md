@@ -18,7 +18,7 @@ If you want a preview please visit [here](https://techblogcore.top/)
 
 ### Install Database
 
-You can install both MySQL & MariaDB:
+You can install either MySQL or MariaDB:
 
 ```sh
 sudo yum install mariadb-server
