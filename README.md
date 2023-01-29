@@ -33,6 +33,8 @@ dotnet remove package Pomelo.EntityFrameworkCore.Mysql
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 7.0.2
 ```
 
+And configure as it should be.
+
 ### Configure Launch Settings
 
 Change IP address to your local network address in `Properties/launchSettings.json`:
