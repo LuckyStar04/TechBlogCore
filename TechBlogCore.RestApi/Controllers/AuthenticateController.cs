@@ -126,6 +126,19 @@ namespace TechBlogCore.RestApi.Controllers
             return Ok(new { role, user, email });
         }
 
+        [Authorize(Roles = "Admin,CommonUser")]
+        [HttpPost("passwd")]
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeDto dto)
+        {
+            var user = await userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email)?.Value);
+            var result = await userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new ResponseDto<string> { Code = 1, Msg = result.Errors?.FirstOrDefault()?.Description });
+            }
+            return Ok(new ResponseDto<string> { Msg = "密码修改成功。" });
+        }
+
         private string GetToken(string sub, string email, string role)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
