@@ -84,6 +84,7 @@ builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
 builder.Services.AddScoped<ICommentRepo, CommentRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<ITagRepo, TagRepo>();
+builder.Services.AddSingleton<HttpClient, HttpClient>();
 
 var app = builder.Build();
 
