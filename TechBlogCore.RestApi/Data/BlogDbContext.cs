@@ -17,6 +17,7 @@ namespace TechBlogCore.RestApi.Data
         public DbSet<Blog_Tag> Blog_Tags { get; set; }
         public DbSet<Blog_Comment> Blog_Comments { get; set; }
         public DbSet<Blog_ArticleTags> Blog_ArticleTags { get; set; }
+        public DbSet<Chat_Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -58,6 +59,11 @@ namespace TechBlogCore.RestApi.Data
                     o => o.HasOne(o => o.Article).WithMany().HasForeignKey(o => o.ArticleId).OnDelete(DeleteBehavior.NoAction),
                     o => o.HasKey(t => new { t.ArticleId, t.TagId })
                 );
+            builder.Entity<Chat_Message>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Messages)
+                .HasForeignKey(c => c.Blog_UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

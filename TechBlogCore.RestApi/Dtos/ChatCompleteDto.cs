@@ -6,6 +6,13 @@
         public string Content { get; set; }
     }
 
+    public class ChatDto
+    {
+        public bool isMe { get; set; }
+        public string content { get; set; }
+        public DateTime time { get; set; }
+    }
+
     public class ChatCompleteDto
     {
         public string model { get; set; }
