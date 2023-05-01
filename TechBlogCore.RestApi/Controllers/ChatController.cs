@@ -57,7 +57,7 @@ namespace TechBlogCore.RestApi.Controllers
             messages.AddRange(chatRepo.GetMessagesByUserId(user.Id).Select(v => new ChatCompleteMessageDto
             {
                 role = v.IsMe ? "user" : "assistant",
-                content = v.IsMe || string.IsNullOrEmpty(v.Message) ? v.Message : JsonSerializer.Deserialize<ChatResponseDto>(v.Message).choices[0].message.con,
+                content = v.IsMe || string.IsNullOrEmpty(v.Message) ? v.Message : JsonSerializer.Deserialize<ChatResponseDto>(v.Message).choices[0].message.content,
             }));
             if (!string.IsNullOrEmpty(dto.Content))
             {
