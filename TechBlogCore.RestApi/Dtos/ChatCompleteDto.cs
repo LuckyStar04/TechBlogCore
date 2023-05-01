@@ -27,10 +27,13 @@
 
     public class ChatResponseDto
     {
-        public string id { get; set; }
-        public string @object { get; set; }
-        public int created { get; set; }
-        public string model { get; set; }
-        public int MyProperty { get; set; }
+        public List<ChatMessageDto> choices { get; set; }
+    }
+
+    public class ChatMessageDto
+    {
+        public ChatCompleteMessageDto message { get; set; }
+        public string finish_reason { get; set; }
+        public int index { get; set; }
     }
 }
