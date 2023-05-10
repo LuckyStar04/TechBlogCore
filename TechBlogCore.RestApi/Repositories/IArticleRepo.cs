@@ -3,7 +3,7 @@ using TechBlogCore.RestApi.Dtos;
 using TechBlogCore.RestApi.Entities;
 using TechBlogCore.RestApi.Helpers;
 
-namespace TechBlogCore.RestApi.Services
+namespace TechBlogCore.RestApi.Repositories
 {
     public interface IArticleRepo
     {

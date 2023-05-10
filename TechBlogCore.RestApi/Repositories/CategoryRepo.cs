@@ -2,7 +2,7 @@
 using TechBlogCore.RestApi.Data;
 using TechBlogCore.RestApi.Entities;
 
-namespace TechBlogCore.RestApi.Services;
+namespace TechBlogCore.RestApi.Repositories;
 
 public class CategoryRepo : ICategoryRepo
 {

@@ -5,7 +5,7 @@ using TechBlogCore.RestApi.Dtos;
 using TechBlogCore.RestApi.Entities;
 using TechBlogCore.RestApi.Helpers;
 
-namespace TechBlogCore.RestApi.Services
+namespace TechBlogCore.RestApi.Repositories
 {
     public class ArticleRepo : IArticleRepo
     {
@@ -114,7 +114,7 @@ namespace TechBlogCore.RestApi.Services
 
         public async Task<bool> SaveChanges()
         {
-            return (await context.SaveChangesAsync()) > 0;
+            return await context.SaveChangesAsync() > 0;
         }
     }
 }

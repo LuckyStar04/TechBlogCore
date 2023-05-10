@@ -13,27 +13,22 @@ namespace TechBlogCore.RestApi.Controllers;
 [Route("api/articles")]
 public class ArticleController : ControllerBase
 {
-	private readonly IArticleRepo articleRepo;
-    private readonly ICategoryRepo categoryRepo;
-    private readonly ITagRepo tagRepo;
+    private readonly ArticleService service;
     private readonly IMapper mapper;
 
-	public ArticleController(IArticleRepo articleRepo,
-                             ICategoryRepo categoryRepo,
-                             ITagRepo tagRepo,
-							 IMapper mapper)
+    public ArticleController(ArticleService service,
+                             IMapper mapper)
 	{
-		this.articleRepo = articleRepo;
-        this.categoryRepo = categoryRepo;
-        this.tagRepo = tagRepo;
+        this.service = service;
         this.mapper = mapper;
-	}
+    }
 
 	[HttpGet]
 	public async Task<IActionResult> GetArticles([FromQuery]ArticleDtoParam param)
 	{
-		var articles = await articleRepo.GetArticles(param);
-		var articleDtos = mapper.Map<IEnumerable<ArticleListDto>>(articles);
+		var articles = await service.GetArticles(param);
+        var articleDtos = mapper.Map<IEnumerable<ArticleListDto>>(articles);
+
         var paginationMetadata = new
         {
             totalCount = articles.TotalCount,
@@ -54,14 +49,7 @@ public class ArticleController : ControllerBase
     [HttpGet("{id:int:min(1)}", Name = nameof(GetArticle))]
     public async Task<ActionResult<ArticleDetailDto>> GetArticle(int id)
     {
-        var article = await articleRepo.GetArticle(id);
-        if (article != null)
-        {
-            article.ViewsCount++;
-            await articleRepo.SaveChanges();
-            article.Comments = article.Comments.Where(c => c.ParentId == null);
-        }
-        var dto = mapper.Map<ArticleDetailDto>(article);
+        var dto = await service.GetArticle(id);
         return Ok(dto);
     }
 
@@ -69,37 +57,25 @@ public class ArticleController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateArticle(ArticleCreateDto createDto)
     {
-        var result = await articleRepo.CreateArticle(createDto);
-        var dto = mapper.Map<ArticleDetailDto>(result);
-        return CreatedAtRoute(nameof(GetArticle), new { id = result.Id }, dto);
+        var dto = await service.CreateArticle(createDto);
+        return CreatedAtRoute(nameof(GetArticle), new { id = dto.Id }, dto);
     }
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int:min(1)}")]
     public async Task<IActionResult> UpdateArticle(int id, [FromBody]ArticleUpdateDto updateDto)
     {
-        var entity = await articleRepo.GetArticle(id);
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        var result = await articleRepo.UpdateArticle(entity, updateDto);
-        if (result)
-        {
-            return Ok();
-        }
-        return BadRequest();
+        var result = await service.UpdateArticle(id, updateDto);
+        if (result) return Ok();
+        return NotFound();
     }
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int:min(1)}")]
     public async Task<IActionResult> DeleteArticle(int id)
     {
-        var result = await articleRepo.DeleteArticle(id);
-        if (result)
-        {
-            return Ok();
-        }
-        return BadRequest();
+        var result = await service.DeleteArticle(id);
+        if (result) return Ok();
+        return NotFound();
     }
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TechBlogCore.RestApi.Dtos;
+using TechBlogCore.RestApi.Repositories;
 using TechBlogCore.RestApi.Services;
 
 namespace TechBlogCore.RestApi.Controllers;
@@ -9,20 +10,17 @@ namespace TechBlogCore.RestApi.Controllers;
 [Route("api/tags")]
 public class TagController : ControllerBase
 {
-    private readonly ITagRepo tagRepo;
-    private readonly IMapper mapper;
+    private readonly TagService service;
 
-    public TagController(ITagRepo tagRepo, IMapper mapper)
+    public TagController(TagService service)
     {
-        this.tagRepo = tagRepo;
-        this.mapper = mapper;
+        this.service = service;
     }
 
     [HttpGet]
     public IActionResult GetCategories(int size)
     {
-        var tags = tagRepo.GetTags(size);
-        var tagDtos = mapper.Map<IEnumerable<TagDto>>(tags);
-        return Ok(tagDtos);
+        var tags = service.GetTags(size);
+        return Ok(tags);
     }
 }

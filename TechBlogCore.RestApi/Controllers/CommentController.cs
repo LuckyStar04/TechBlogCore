@@ -8,6 +8,7 @@ using System.Text.Json;
 using TechBlogCore.RestApi.DtoParams;
 using TechBlogCore.RestApi.Dtos;
 using TechBlogCore.RestApi.Entities;
+using TechBlogCore.RestApi.Repositories;
 using TechBlogCore.RestApi.Services;
 
 namespace TechBlogCore.RestApi.Controllers
@@ -16,34 +17,20 @@ namespace TechBlogCore.RestApi.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly IArticleRepo articleRepo;
-        private readonly ICommentRepo commentRepo;
-        private readonly UserManager<Blog_User> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly CommentService service;
         private readonly IMapper mapper;
+        private readonly UserManager<Blog_User> userManager;
 
-        public CommentController(IArticleRepo articleRepo,
-                                 ICommentRepo commentRepo,
-                                 UserManager<Blog_User> userManager,
-                                 RoleManager<IdentityRole> roleManager,
-                                 IMapper mapper)
+        public CommentController(CommentService service, IMapper mapper, UserManager<Blog_User> userManager)
         {
-            this.articleRepo = articleRepo;
-            this.commentRepo = commentRepo;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
+            this.service = service;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetComments(int articleId, [FromQuery]CommentDtoParam param)
         {
-            var exists = await articleRepo.ArticleExists(articleId);
-            if (!exists)
-            {
-                return NotFound("文章未找到！");
-            }
-            var comments = await commentRepo.GetArticleComments(articleId, param);
+            var comments = await service.GetComments(articleId, param);
             var dtos = mapper.Map<IEnumerable<CommentDto>>(comments);
             var paginationMetadata = new
             {
@@ -65,17 +52,7 @@ namespace TechBlogCore.RestApi.Controllers
         [HttpGet("{commentId:int:min(1)}", Name = nameof(GetComment))]
         public async Task<ActionResult<CommentDto>> GetComment(int articleId, int commentId)
         {
-            var exists = await articleRepo.ArticleExists(articleId);
-            if (!exists)
-            {
-                return NotFound("文章未找到！");
-            }
-            var commentEntity = await commentRepo.GetComment(articleId, commentId);
-            if (commentEntity == null)
-            {
-                return NotFound("评论未找到！");
-            }
-            var dto = mapper.Map<CommentDto>(commentEntity);
+            var dto = await service.GetComment(articleId, commentId);
             return Ok(dto);
         }
 
@@ -88,23 +65,9 @@ namespace TechBlogCore.RestApi.Controllers
             {
                 return Unauthorized("请登录");
             }
-            var articleEntity = await articleRepo.GetArticle(articleId);
-            if (articleEntity == null)
-            {
-                return NotFound("文章未找到！");
-            }
-            Blog_Comment parent = null;
-            if (dto.ParentId != null && dto.ParentId > 0)
-            {
-                parent = await commentRepo.GetComment(articleId, dto.ParentId.Value);
-                if (parent == null)
-                {
-                    return NotFound("父评论未找到！");
-                }
-            }
-            var commentCreate = await commentRepo.CreateComment(user, articleEntity, parent, dto.Content, dto.ReplyTo);
-            var commentDto = mapper.Map<CommentDto>(commentCreate);
-            return CreatedAtRoute(nameof(GetComment), new { articleId, commentId = commentCreate.Id }, commentDto);
+            var commentDto = await service.CreateComment(user, articleId, dto);
+
+            return CreatedAtRoute(nameof(GetComment), new { articleId, commentId = commentDto.Id }, commentDto);
         }
 
         [Authorize(Roles = "Admin,CommonUser")]
@@ -116,23 +79,7 @@ namespace TechBlogCore.RestApi.Controllers
             {
                 return Unauthorized("请登录");
             }
-            var articleEntity = await articleRepo.GetArticle(articleId);
-            if (articleEntity == null)
-            {
-                return NotFound("文章未找到！");
-            }
-            var comment = await commentRepo.GetComment(articleId, commentId);
-            if (comment == null)
-            {
-                return NotFound("评论未找到！");
-            }
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (role != "Admin" && comment.Blog_UserId != user.Id)
-            {
-                return Unauthorized("不能修改他人评论");
-            }
-
-            var result = await commentRepo.ModifyComment(comment, dto.Content);
+            var result = await service.ModifyComment(User, user, articleId, commentId, dto);
             if (result)
             {
                 return Ok("修改成功");
@@ -149,23 +96,7 @@ namespace TechBlogCore.RestApi.Controllers
             {
                 return Unauthorized("用户未找到");
             }
-            var articleEntity = await articleRepo.GetArticle(articleId);
-            if (articleEntity == null)
-            {
-                return NotFound("文章未找到！");
-            }
-            var comment = await commentRepo.GetComment(articleId, commentId);
-            if (comment == null)
-            {
-                return NotFound("评论未找到！");
-            }
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (role != "Admin" && comment.Blog_UserId != user.Id)
-            {
-                return Unauthorized("不能删除他人评论！");
-            }
-
-            var result = await commentRepo.DeleteComment(comment);
+            var result = await service.DeleteComment(User, user, articleId, commentId);
             if (result)
             {
                 return Ok();

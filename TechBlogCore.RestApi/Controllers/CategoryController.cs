@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TechBlogCore.RestApi.Dtos;
+using TechBlogCore.RestApi.Repositories;
 using TechBlogCore.RestApi.Services;
 
 namespace TechBlogCore.RestApi.Controllers;
@@ -9,20 +10,17 @@ namespace TechBlogCore.RestApi.Controllers;
 [Route("api/categories")]
 public class CategoryController : ControllerBase
 {
-    private readonly ICategoryRepo categoryRepo;
-    private readonly IMapper mapper;
+    private readonly CategoryService service;
 
-    public CategoryController(ICategoryRepo categoryRepo, IMapper mapper)
+    public CategoryController(CategoryService service)
     {
-        this.categoryRepo = categoryRepo;
-        this.mapper = mapper;
+        this.service = service;
     }
 
     [HttpGet]
     public IActionResult GetCategories(int size)
     {
-        var categories = categoryRepo.GetCategories(size);
-        var categoryDtos = mapper.Map<IEnumerable<CategoryDto>>(categories);
+        var categoryDtos = service.GetCategories(size);
         return Ok(categoryDtos);
     }
 }

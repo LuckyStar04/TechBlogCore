@@ -1,13 +1,13 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MySqlConnector;
 using System.Text;
 using TechBlogCore.RestApi.Data;
 using TechBlogCore.RestApi.Entities;
-using TechBlogCore.RestApi.Profiles;
+using TechBlogCore.RestApi.Helpers;
+using TechBlogCore.RestApi.Repositories;
 using TechBlogCore.RestApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,6 +80,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
     };
 });
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 builder.Services.AddScoped<IArticleRepo, ArticleRepo>();
 builder.Services.AddScoped<ICommentRepo, CommentRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
@@ -87,7 +89,16 @@ builder.Services.AddScoped<ITagRepo, TagRepo>();
 builder.Services.AddSingleton<HttpClient, HttpClient>();
 builder.Services.AddScoped<IChatRepo, ChatRepo>();
 
+builder.Services.AddScoped<ArticleService, ArticleService>();
+builder.Services.AddScoped<CategoryService, CategoryService>();
+builder.Services.AddScoped<ChatService, ChatService>();
+builder.Services.AddScoped<CommentService, CommentService>();
+builder.Services.AddScoped<TagService, TagService>();
+
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+app.ConfigureExceptionHandler(logger);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

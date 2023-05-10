@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using TechBlogCore.RestApi.DtoParams;
 using TechBlogCore.RestApi.Dtos;
-using TechBlogCore.RestApi.Services;
+using TechBlogCore.RestApi.Repositories;
 
 namespace TechBlogCore.RestApi.Controllers
 {
