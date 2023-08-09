@@ -2,11 +2,7 @@
 
 ----
 
-## 简介 | Introduction
-
-简约时尚风格博客后端，采用 ASP.NET Core 7 Rest API + EF Core + MariaDB + JWT 鉴权
-
-需要项目预览，请移步 [这里](https://techblogcore.top/)
+## Introduction
 
 A blog back-end based on ASP.NET Core 7 Rest API + EF Core + MariaDB + JWT Authorization
 
